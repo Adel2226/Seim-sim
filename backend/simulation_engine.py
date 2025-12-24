@@ -149,7 +149,10 @@ class SimulationEngine:
                 attacker_state=session.attacker_state,
                 stress_level=session.stress_level,
                 metrics=session.metrics,
-                simulation_time=session.simulation_time
+                simulation_time=session.simulation_time,
+                timeline_events=[],
+                team_messages=[],
+                achievements=[]
             )
         
         cmd_def = self.available_commands[command]
@@ -157,8 +160,19 @@ class SimulationEngine:
         # Update simulation time
         session.simulation_time += cmd_def["time"]
         
+        # Add command to timeline
+        timeline_event = self.timeline.add_event(
+            event_type="command",
+            title=f"Executed: {command}",
+            description=f"Parameters: {parameters}",
+            severity="info",
+            metadata={"command": command, "params": parameters}
+        )
+        
         # Apply command effects
         new_alerts = []
+        team_messages = []
+        achievements = []
         message = ""
         
         if command == "isolate_network":

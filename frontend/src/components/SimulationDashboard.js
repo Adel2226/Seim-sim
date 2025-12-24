@@ -398,7 +398,7 @@ const SimulationDashboard = () => {
           />
         </div>
         
-        {/* Right Column: System State */}
+        {/* Right Column: System State & Attack Map */}
         <div className="right-column">
           <div className="panel system-state-panel">
             <div className="panel-header">
@@ -470,6 +470,11 @@ const SimulationDashboard = () => {
               </div>
             </div>
           </div>
+          
+          <AttackMapVisualization 
+            attackerState={session.attacker_state}
+            systemState={session.system_state}
+          />
         </div>
       </div>
       
@@ -493,6 +498,11 @@ const SimulationDashboard = () => {
       <AchievementsDisplay 
         achievements={achievements.slice(-1)}
         totalPoints={totalPoints}
+      />
+      
+      <AIAssistantPanel 
+        advice={aiAdvice}
+        onRequestHint={requestHint}
       />
     </div>
   );

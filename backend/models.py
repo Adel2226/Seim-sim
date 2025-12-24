@@ -189,6 +189,9 @@ class CommandExecutionResponse(BaseModel):
     stress_level: float
     metrics: Dict[str, float]
     simulation_time: float
+    timeline_events: List[Dict[str, Any]] = Field(default_factory=list)
+    team_messages: List[Dict[str, Any]] = Field(default_factory=list)
+    achievements: List[Dict[str, Any]] = Field(default_factory=list)
 
 # Evaluation Result
 class EvaluationResult(BaseModel):

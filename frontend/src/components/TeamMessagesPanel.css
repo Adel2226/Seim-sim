@@ -1,0 +1,186 @@
+.team-messages-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  max-width: 400px;
+}
+
+.team-messages-toggle {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  color: var(--primary-dark);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  box-shadow: 0 5px 20px rgba(100, 255, 218, 0.3);
+  transition: var(--transition);
+  margin-right: auto;
+}
+
+.team-messages-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(100, 255, 218, 0.4);
+}
+
+.unread-badge {
+  background: var(--accent-red);
+  color: white;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  animation: pulse 1.5s infinite;
+}
+
+.team-messages-panel {
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  width: 400px;
+  max-height: 500px;
+  background: var(--panel-bg);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.messages-list {
+  max-height: 450px;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.team-message {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-right: 3px solid;
+  animation: messageSlide 0.3s ease;
+}
+
+@keyframes messageSlide {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.message-normal {
+  border-right-color: var(--accent-blue);
+}
+
+.message-medium {
+  border-right-color: var(--accent-yellow);
+}
+
+.message-high {
+  border-right-color: var(--accent-red);
+  background: rgba(255, 100, 127, 0.05);
+}
+
+.message-critical {
+  border-right-color: var(--accent-red);
+  background: rgba(255, 100, 127, 0.1);
+  animation: messagePulse 2s infinite, messageSlide 0.3s ease;
+}
+
+@keyframes messagePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 100, 127, 0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(255, 100, 127, 0); }
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.message-sender {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-blue);
+  font-size: 13px;
+}
+
+.message-sender i {
+  font-size: 14px;
+}
+
+.urgency-badge {
+  font-size: 18px;
+}
+
+.message-content {
+  color: var(--text-light);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.message-positive {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent-green);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.no-messages {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-gray);
+}
+
+.no-messages i {
+  font-size: 36px;
+  margin-bottom: 10px;
+  opacity: 0.5;
+}
+
+.no-messages p {
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .team-messages-container {
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+  
+  .team-messages-panel {
+    width: 100%;
+    right: 0;
+  }
+}

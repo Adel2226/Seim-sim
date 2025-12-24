@@ -64,7 +64,7 @@ const LiveMetricsChart = ({ metrics, history = [] }) => {
   }, [metrics, history]);
   
   return (
-    <div className=\"live-metrics-chart\">
+    <div className="live-metrics-chart">
       <canvas 
         ref={canvasRef}
         width={600}

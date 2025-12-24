@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, HTTPException
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -6,9 +6,17 @@ import os
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict
-from typing import List
+from typing import List, Dict, Any
 import uuid
 from datetime import datetime, timezone
+
+# Import simulation models and engine
+from models import (
+    Scenario, ScenarioCreate, SimulationSession, SimulationSessionCreate,
+    CommandExecutionRequest, CommandExecutionResponse, EvaluationResult,
+    Alert, AlertSeverity, AttackerPhase, SimulationStatus
+)
+from simulation_engine import SimulationEngine
 
 
 ROOT_DIR = Path(__file__).parent
@@ -18,6 +26,9 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+
+# Initialize simulation engine
+sim_engine = SimulationEngine()
 
 # Create the main app without a prefix
 app = FastAPI()

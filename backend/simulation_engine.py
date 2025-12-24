@@ -8,6 +8,8 @@ import random
 import uuid
 from realtime_events import RealtimeEventGenerator
 from timeline_manager import TimelineManager
+from ai_assistant import AIAssistant
+from advanced_features import SoundEffects, RankingSystem, DifficultyManager
 
 class SimulationEngine:
     """Core engine for the interactive SIEM simulation"""
@@ -15,6 +17,8 @@ class SimulationEngine:
     def __init__(self):
         self.event_generator = RealtimeEventGenerator()
         self.timeline = TimelineManager()
+        self.ai_assistant = AIAssistant()
+        self.difficulty = "normal"
         
         # Command definitions with their effects
         self.available_commands = {

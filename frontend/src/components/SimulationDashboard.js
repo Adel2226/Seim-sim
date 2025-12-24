@@ -139,7 +139,20 @@ const SimulationDashboard = () => {
             message: achievement.description,
             points: achievement.points
           });
+          
+          // Play achievement sound
+          playSound(response.data.sound_effect || { type: 'melody', notes: [523, 659, 784] });
         });
+      }
+      
+      // Handle AI advice
+      if (response.data.ai_advice) {
+        setAiAdvice(response.data.ai_advice);
+      }
+      
+      // Handle sound effects
+      if (response.data.sound_effect) {
+        playSound(response.data.sound_effect);
       }
       
       // Success notification

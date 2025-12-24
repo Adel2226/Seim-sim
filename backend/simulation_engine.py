@@ -6,11 +6,16 @@ from models import (
 from datetime import datetime, timezone
 import random
 import uuid
+from realtime_events import RealtimeEventGenerator
+from timeline_manager import TimelineManager
 
 class SimulationEngine:
     """Core engine for the interactive SIEM simulation"""
     
     def __init__(self):
+        self.event_generator = RealtimeEventGenerator()
+        self.timeline = TimelineManager()
+        
         # Command definitions with their effects
         self.available_commands = {
             # Network commands

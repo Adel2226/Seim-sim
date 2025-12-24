@@ -179,13 +179,20 @@ const SimulationDashboard = () => {
   }, [sessionId]);
   
   const addNotification = (notification) => {
-    const id = Date.now();
+    const id = Date.now() + Math.random();
     setNotifications(prev => [...prev, { ...notification, id }]);
     
-    // Auto dismiss after 5 seconds
-    setTimeout(() => {
-      dismissNotification(id);
-    }, 5000);
+    // Auto dismiss after longer time for important notifications
+    const dismissTime = notification.urgent ? 10000 : 
+                       notification.type === 'achievement' ? 0 : // No auto-dismiss for achievements
+                       notification.type === 'alert' ? 8000 :
+                       5000;
+    
+    if (dismissTime > 0) {
+      setTimeout(() => {
+        dismissNotification(id);
+      }, dismissTime);
+    }
   };
   
   const dismissNotification = (id) => {

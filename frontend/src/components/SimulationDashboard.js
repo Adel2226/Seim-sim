@@ -496,8 +496,11 @@ const SimulationDashboard = () => {
       <TeamMessagesPanel messages={teamMessages} />
       
       <AchievementsDisplay 
-        achievements={achievements.slice(-1)}
+        achievements={achievements}
         totalPoints={totalPoints}
+        onDismiss={(idx) => {
+          setAchievements(prev => prev.filter((_, i) => i !== idx));
+        }}
       />
       
       <AIAssistantPanel 

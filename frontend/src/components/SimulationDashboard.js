@@ -394,6 +394,19 @@ const SimulationDashboard = () => {
           onRestart={() => navigate('/')}
         />
       )}
+      
+      {/* Interactive Components */}
+      <NotificationSystem 
+        notifications={notifications}
+        onDismiss={(idx) => dismissNotification(notifications[idx]?.id)}
+      />
+      
+      <TeamMessagesPanel messages={teamMessages} />
+      
+      <AchievementsDisplay 
+        achievements={achievements.slice(-1)}
+        totalPoints={totalPoints}
+      />
     </div>
   );
 };

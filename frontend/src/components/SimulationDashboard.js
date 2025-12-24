@@ -11,6 +11,8 @@ import NotificationSystem from './NotificationSystem';
 import TimelinePanel from './TimelinePanel';
 import TeamMessagesPanel from './TeamMessagesPanel';
 import AchievementsDisplay from './AchievementsDisplay';
+import AIAssistantPanel from './AIAssistantPanel';
+import AttackMapVisualization from './AttackMapVisualization';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -31,6 +33,7 @@ const SimulationDashboard = () => {
   const [achievements, setAchievements] = useState([]);
   const [totalPoints, setTotalPoints] = useState(0);
   const [timelineEvents, setTimelineEvents] = useState([]);
+  const [aiAdvice, setAiAdvice] = useState(null);
   
   useEffect(() => {
     fetchSession();

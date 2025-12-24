@@ -192,6 +192,8 @@ class CommandExecutionResponse(BaseModel):
     timeline_events: List[Dict[str, Any]] = Field(default_factory=list)
     team_messages: List[Dict[str, Any]] = Field(default_factory=list)
     achievements: List[Dict[str, Any]] = Field(default_factory=list)
+    ai_advice: Optional[Dict[str, Any]] = None
+    sound_effect: Optional[Dict[str, Any]] = None
 
 # Evaluation Result
 class EvaluationResult(BaseModel):

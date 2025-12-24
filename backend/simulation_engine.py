@@ -343,6 +343,16 @@ class SimulationEngine:
             len(session.commands_history)
         )
         
+        # Get AI assistant advice
+        ai_advice = self.ai_assistant.analyze_situation(session)
+        
+        # Get sound effect config
+        sound_effect = None
+        if "blocked" in message or "prevented" in message:
+            sound_effect = SoundEffects.get_sound_config("attacker_blocked")
+        elif new_alerts:
+            sound_effect = SoundEffects.get_sound_config(f"alert_{new_alerts[0].severity}")
+        
         return CommandExecutionResponse(
             success=True,
             message=message,
@@ -354,7 +364,9 @@ class SimulationEngine:
             simulation_time=session.simulation_time,
             timeline_events=self.timeline.get_recent_events(5),
             team_messages=team_messages,
-            achievements=achievements
+            achievements=achievements,
+            ai_advice=ai_advice,
+            sound_effect=sound_effect
         )
     
     def _attacker_responds(self, session: SimulationSession, defender_action: str) -> List[Alert]:

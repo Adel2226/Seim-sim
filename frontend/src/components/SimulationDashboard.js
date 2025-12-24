@@ -7,6 +7,10 @@ import InvestigationPanel from './InvestigationPanel';
 import CommandInterface from './CommandInterface';
 import MetricsPanel from './MetricsPanel';
 import EvaluationModal from './EvaluationModal';
+import NotificationSystem from './NotificationSystem';
+import TimelinePanel from './TimelinePanel';
+import TeamMessagesPanel from './TeamMessagesPanel';
+import AchievementsDisplay from './AchievementsDisplay';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -20,6 +24,13 @@ const SimulationDashboard = () => {
   const [availableCommands, setAvailableCommands] = useState({});
   const [showEvaluation, setShowEvaluation] = useState(false);
   const [evaluation, setEvaluation] = useState(null);
+  
+  // New interactive states
+  const [notifications, setNotifications] = useState([]);
+  const [teamMessages, setTeamMessages] = useState([]);
+  const [achievements, setAchievements] = useState([]);
+  const [totalPoints, setTotalPoints] = useState(0);
+  const [timelineEvents, setTimelineEvents] = useState([]);
   
   useEffect(() => {
     fetchSession();

@@ -1,0 +1,294 @@
+.command-interface {
+  background: var(--panel-bg);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.help-btn {
+  background: rgba(100, 255, 218, 0.1);
+  border: 1px solid var(--accent-blue);
+  color: var(--accent-blue);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.help-btn:hover {
+  background: rgba(100, 255, 218, 0.2);
+}
+
+.help-panel {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.help-panel h4 {
+  color: var(--accent-blue);
+  margin-bottom: 15px;
+}
+
+.commands-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+}
+
+.command-help-item {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  border-radius: 6px;
+  border-right: 3px solid var(--accent-blue);
+}
+
+.command-help-item code {
+  color: var(--accent-green);
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.command-help-item span {
+  color: var(--text-gray);
+  font-size: 13px;
+}
+
+.command-help-item .params {
+  margin-top: 5px;
+  font-size: 11px;
+  color: var(--accent-yellow);
+}
+
+.quick-commands {
+  padding: 20px;
+  border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.quick-commands-label {
+  color: var(--text-gray);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.quick-commands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.quick-cmd-btn {
+  background: rgba(100, 255, 218, 0.05);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  color: var(--accent-blue);
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.quick-cmd-btn:hover {
+  background: rgba(100, 255, 218, 0.1);
+  border-color: var(--accent-blue);
+  transform: translateY(-2px);
+}
+
+.quick-cmd-btn i {
+  font-size: 20px;
+}
+
+.command-input-container {
+  padding: 20px;
+  border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(100, 255, 218, 0.3);
+  border-radius: 8px;
+  padding: 0 15px;
+}
+
+.prompt {
+  color: var(--accent-green);
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.command-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-light);
+  padding: 15px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  outline: none;
+}
+
+.command-input::placeholder {
+  color: var(--text-gray);
+  opacity: 0.5;
+}
+
+.execute-btn {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  color: var(--primary-dark);
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.execute-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(100, 255, 218, 0.4);
+}
+
+.execute-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.command-history {
+  padding: 20px;
+}
+
+.history-header {
+  color: var(--text-gray);
+  font-size: 14px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.history-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.history-entry {
+  background: rgba(255, 255, 255, 0.03);
+  border-right: 3px solid;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.history-entry.success {
+  border-color: var(--accent-green);
+}
+
+.history-entry.error {
+  border-color: var(--accent-red);
+}
+
+.history-entry.executing {
+  border-color: var(--accent-yellow);
+}
+
+.history-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.history-time {
+  font-size: 11px;
+  color: var(--text-gray);
+}
+
+.history-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.status-success {
+  color: var(--accent-green);
+}
+
+.status-error {
+  color: var(--accent-red);
+}
+
+.status-executing {
+  color: var(--accent-yellow);
+}
+
+.history-command {
+  margin-bottom: 8px;
+}
+
+.history-command code {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: var(--accent-green);
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+}
+
+.history-message {
+  color: var(--text-gray);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.new-alerts-badge {
+  background: rgba(255, 100, 127, 0.2);
+  color: var(--accent-red);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.empty-history {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-gray);
+}
+
+.empty-history i {
+  font-size: 36px;
+  margin-bottom: 10px;
+  opacity: 0.5;
+}
+
+.empty-history p {
+  font-size: 14px;
+}

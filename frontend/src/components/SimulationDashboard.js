@@ -28,6 +28,7 @@ const SimulationDashboard = () => {
     // Auto-refresh session every 5 seconds
     const interval = setInterval(fetchSession, 5000);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
   
   const fetchSession = async () => {

@@ -5,6 +5,12 @@
   transform: translate(-50%, -50%);
   z-index: 10000;
   pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .achievement-popup {
@@ -19,6 +25,7 @@
   position: relative;
   overflow: hidden;
   min-width: 350px;
+  pointer-events: all;
 }
 
 @keyframes achievementPop {

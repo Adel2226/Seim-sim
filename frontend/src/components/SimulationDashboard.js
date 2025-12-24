@@ -192,23 +192,93 @@ const SimulationDashboard = () => {
     setNotifications(prev => prev.filter(n => n.id !== id));
   };
   
-  const playAlertSound = () => {
-    // Simple beep sound
+  const playSound = (soundConfig) => {
+    if (!soundConfig || soundConfig.type === 'silent') return;
+    
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
     
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    oscillator.frequency.value = 800;
-    oscillator.type = 'sine';
-    
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-    
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.5);
+    if (soundConfig.type === 'beep') {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.value = soundConfig.frequency || 800;
+      oscillator.type = 'sine';
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(
+        0.01, 
+        audioContext.currentTime + (soundConfig.duration || 0.3)
+      );
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + (soundConfig.duration || 0.3));
+      
+      // Handle repeats
+      if (soundConfig.repeat > 1) {
+        for (let i = 1; i < soundConfig.repeat; i++) {
+          setTimeout(() => {
+            const osc2 = audioContext.createOscillator();
+            const gain2 = audioContext.createGain();
+            osc2.connect(gain2);
+            gain2.connect(audioContext.destination);
+            osc2.frequency.value = soundConfig.frequency || 800;
+            osc2.type = 'sine';
+            gain2.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain2.gain.exponentialRampToValueAtTime(
+              0.01,
+              audioContext.currentTime + (soundConfig.duration || 0.3)
+            );
+            osc2.start(audioContext.currentTime);
+            osc2.stop(audioContext.currentTime + (soundConfig.duration || 0.3));
+          }, i * ((soundConfig.interval || 0.2) + (soundConfig.duration || 0.3)) * 1000);
+        }
+      }
+    } else if (soundConfig.type === 'melody') {
+      soundConfig.notes.forEach((note, index) => {
+        setTimeout(() => {
+          const osc = audioContext.createOscillator();
+          const gain = audioContext.createGain();
+          osc.connect(gain);
+          gain.connect(audioContext.destination);
+          osc.frequency.value = note;
+          osc.type = 'sine';
+          gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+          gain.gain.exponentialRampToValueAtTime(
+            0.01,
+            audioContext.currentTime + (soundConfig.duration || 0.15)
+          );
+          osc.start(audioContext.currentTime);
+          osc.stop(audioContext.currentTime + (soundConfig.duration || 0.15));
+        }, index * (soundConfig.duration || 0.15) * 1000);
+      });
+    }
+  };
+  
+  const requestHint = async () => {
+    try {
+      const response = await axios.post(`${API}/simulation/${sessionId}/hint`, null, {
+        params: { difficulty: 'medium' }
+      });
+      
+      if (response.data.available) {
+        addNotification({
+          type: 'message',
+          title: 'تلميح',
+          message: response.data.hint
+        });
+      } else {
+        addNotification({
+          type: 'message',
+          title: 'تلميح',
+          message: response.data.hint
+        });
+      }
+    } catch (error) {
+      console.error('Error requesting hint:', error);
+    }
   };
   
   const completeSimulation = async () => {

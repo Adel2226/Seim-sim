@@ -307,6 +307,38 @@ class SimulationEngine:
         if attacker_response:
             new_alerts.extend(attacker_response)
         
+        # Generate random realistic events
+        random_event = self.event_generator.generate_random_event()
+        if random_event:
+            if random_event["type"] == "alert":
+                alert = self.event_generator.create_alert_from_event(random_event)
+                new_alerts.append(alert)
+                self.timeline.add_event("alert", alert.title, alert.description, alert.severity)
+            elif random_event["type"] == "system":
+                team_messages.append({
+                    "sender": "System",
+                    "message": random_event["message"],
+                    "type": "system",
+                    "positive": random_event.get("positive", False)
+                })
+        
+        # Check for pressure messages
+        pressure_msg = self.event_generator.get_pressure_message(session.simulation_time)
+        if pressure_msg:
+            team_messages.append(pressure_msg)
+            session.stress_level = min(100, session.stress_level + 10)
+        
+        # Random team messages
+        team_msg = self.event_generator.get_random_team_message()
+        if team_msg:
+            team_messages.append(team_msg)
+        
+        # Check for achievements
+        achievements = self.event_generator.get_achievement(
+            session.metrics, 
+            len(session.commands_history)
+        )
+        
         return CommandExecutionResponse(
             success=True,
             message=message,
@@ -315,7 +347,10 @@ class SimulationEngine:
             new_alerts=new_alerts,
             stress_level=session.stress_level,
             metrics=session.metrics,
-            simulation_time=session.simulation_time
+            simulation_time=session.simulation_time,
+            timeline_events=self.timeline.get_recent_events(5),
+            team_messages=team_messages,
+            achievements=achievements
         )
     
     def _attacker_responds(self, session: SimulationSession, defender_action: str) -> List[Alert]:

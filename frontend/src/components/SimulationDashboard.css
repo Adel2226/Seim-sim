@@ -125,11 +125,27 @@
   gap: 20px;
   font-size: 14px;
   color: var(--text-light);
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 100, 127, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 100, 127, 0.4);
+  }
 }
 
 .attacker-status i {
   color: var(--accent-red);
   font-size: 20px;
+  animation: attackerBounce 2s ease-in-out infinite;
+}
+
+@keyframes attackerBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
 .blocked-paths {

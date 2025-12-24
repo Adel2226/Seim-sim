@@ -55,6 +55,8 @@ const MetricsPanel = ({ metrics }) => {
           );
         })}
       </div>
+      
+      <LiveMetricsChart metrics={metrics} />
     </div>
   );
 };

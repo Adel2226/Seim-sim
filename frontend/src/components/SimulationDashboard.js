@@ -332,6 +332,13 @@ const SimulationDashboard = () => {
             {formatTime(session.simulation_time)}
           </div>
           
+          {totalPoints > 0 && (
+            <div className="total-points-display">
+              <i className="fas fa-trophy"></i>
+              <span>{totalPoints} نقطة</span>
+            </div>
+          )}
+          
           <div className="stress-level">
             <span>الضغط:</span>
             <div className="stress-bar">

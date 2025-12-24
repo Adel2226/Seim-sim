@@ -1,0 +1,242 @@
+.attack-map-panel {
+  background: var(--panel-bg);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 100, 127, 0.3);
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.kill-chain-container {
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.kill-chain-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 250px;
+}
+
+.phase-indicator {
+  position: relative;
+  width: 180px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+
+.phase-indicator.pending {
+  opacity: 0.5;
+}
+
+.phase-indicator.active {
+  background: rgba(100, 255, 218, 0.1);
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 30px rgba(100, 255, 218, 0.3);
+  animation: activePhase 2s infinite;
+}
+
+@keyframes activePhase {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.phase-indicator.completed {
+  background: rgba(100, 255, 141, 0.1);
+  border-color: var(--accent-green);
+}
+
+.phase-indicator.blocked {
+  background: rgba(255, 100, 127, 0.1);
+  border-color: var(--accent-red);
+}
+
+.phase-number {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 25px;
+  height: 25px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text-light);
+}
+
+.phase-icon {
+  font-size: 32px;
+  color: var(--accent-blue);
+}
+
+.phase-indicator.active .phase-icon {
+  animation: iconPulse 1s infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.phase-indicator.completed .phase-icon {
+  color: var(--accent-green);
+}
+
+.phase-indicator.blocked .phase-icon {
+  color: var(--accent-red);
+}
+
+.phase-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-light);
+  text-align: center;
+}
+
+.progress-ring {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+}
+
+.progress-ring svg {
+  transform: rotate(-90deg);
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--accent-blue);
+}
+
+.blocked-indicator {
+  position: absolute;
+  bottom: -10px;
+  background: var(--accent-red);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 10px rgba(255, 100, 127, 0.5);
+}
+
+.completed-indicator {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 30px;
+  height: 30px;
+  background: var(--accent-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-dark);
+  font-size: 14px;
+  box-shadow: 0 2px 10px rgba(100, 255, 141, 0.5);
+}
+
+.phase-connector {
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.connector-line {
+  width: 2px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.2);
+  transition: var(--transition);
+}
+
+.phase-connector.completed .connector-line {
+  background: var(--accent-green);
+}
+
+.connector-arrow {
+  color: var(--text-gray);
+  font-size: 12px;
+}
+
+.phase-connector.completed .connector-arrow {
+  color: var(--accent-green);
+}
+
+.attack-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-gray);
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--accent-blue);
+}
+
+.stat-value.blocked-count {
+  color: var(--accent-red);
+}
+
+@media (max-width: 768px) {
+  .phase-indicator {
+    width: 150px;
+    height: 100px;
+  }
+  
+  .phase-icon {
+    font-size: 24px;
+  }
+  
+  .attack-stats {
+    grid-template-columns: 1fr;
+  }
+}

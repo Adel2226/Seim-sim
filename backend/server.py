@@ -283,6 +283,67 @@ async def get_available_commands():
     }
 
 
+@api_router.post("/simulation/{session_id}/hint")
+async def get_hint(session_id: str, difficulty: str = "medium"):
+    """Get AI hint for current situation"""
+    # Get session
+    session_dict = await db.simulation_sessions.find_one({"id": session_id}, {"_id": 0})
+    
+    if not session_dict:
+        raise HTTPException(status_code=404, detail="Simulation session not found")
+    
+    # Convert to session object
+    if isinstance(session_dict.get('start_time'), str):
+        session_dict['start_time'] = datetime.fromisoformat(session_dict['start_time'])
+    if session_dict.get('end_time') and isinstance(session_dict['end_time'], str):
+        session_dict['end_time'] = datetime.fromisoformat(session_dict['end_time'])
+    
+    from models import SystemState, AttackerState, Alert, Command
+    if 'system_state' in session_dict and isinstance(session_dict['system_state'], dict):
+        session_dict['system_state'] = SystemState(**session_dict['system_state'])
+    if 'attacker_state' in session_dict and isinstance(session_dict['attacker_state'], dict):
+        session_dict['attacker_state'] = AttackerState(**session_dict['attacker_state'])
+    if 'alerts' in session_dict:
+        session_dict['alerts'] = [Alert(**alert) if isinstance(alert, dict) else alert for alert in session_dict['alerts']]
+    if 'commands_history' in session_dict:
+        session_dict['commands_history'] = [Command(**cmd) if isinstance(cmd, dict) else cmd for cmd in session_dict['commands_history']]
+    
+    session = SimulationSession(**session_dict)
+    
+    # Get hint from AI assistant
+    hint = sim_engine.ai_assistant.get_hint(session, difficulty)
+    
+    return hint
+
+
+@api_router.get("/simulation/{session_id}/rank")
+async def get_player_rank(session_id: str):
+    """Get player rank based on performance"""
+    from advanced_features import RankingSystem
+    
+    # Get session
+    session_dict = await db.simulation_sessions.find_one({"id": session_id}, {"_id": 0})
+    
+    if not session_dict:
+        raise HTTPException(status_code=404, detail="Simulation session not found")
+    
+    # Calculate average score from metrics
+    metrics = session_dict.get('metrics', {})
+    avg_score = sum(metrics.values()) / len(metrics) if metrics else 0
+    
+    # Get rank
+    rank = RankingSystem.get_rank(avg_score)
+    
+    # Get title (would need to track across sessions in real implementation)
+    title = RankingSystem.get_title(0, 1)
+    
+    return {
+        "rank": rank,
+        "title": title,
+        "current_score": round(avg_score, 2)
+    }
+
+
 def _create_default_scenarios() -> List[Scenario]:
     """Create default simulation scenarios"""
     scenarios = []

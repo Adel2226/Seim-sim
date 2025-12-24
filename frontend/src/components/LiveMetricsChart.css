@@ -1,0 +1,11 @@
+.live-metrics-chart {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.live-metrics-chart canvas {
+  display: block;
+  image-rendering: crisp-edges;
+}

@@ -296,6 +296,7 @@ const SimulationDashboard = () => {
         <div className="left-column">
           <AlertsPanel alerts={session.alerts} />
           <MetricsPanel metrics={session.metrics} />
+          <TimelinePanel events={timelineEvents} />
         </div>
         
         {/* Center Column: Investigation & CLI */}

@@ -84,12 +84,115 @@ const SimulationDashboard = () => {
         simulation_time: response.data.simulation_time
       }));
       
+      // Handle new alerts
+      if (response.data.new_alerts && response.data.new_alerts.length > 0) {
+        response.data.new_alerts.forEach(alert => {
+          addNotification({
+            type: 'alert',
+            title: alert.title,
+            message: alert.description,
+            urgent: alert.severity === 'critical'
+          });
+          
+          // Play sound for critical alerts
+          if (alert.severity === 'critical') {
+            playAlertSound();
+          }
+        });
+      }
+      
+      // Handle timeline events
+      if (response.data.timeline_events) {
+        setTimelineEvents(response.data.timeline_events);
+      }
+      
+      // Handle team messages
+      if (response.data.team_messages && response.data.team_messages.length > 0) {
+        setTeamMessages(prev => [...response.data.team_messages, ...prev]);
+        
+        // Add notification for urgent messages
+        response.data.team_messages.forEach(msg => {
+          if (msg.urgency === 'critical' || msg.urgency === 'high') {
+            addNotification({
+              type: 'message',
+              title: `${msg.sender}: رسالة عاجلة`,
+              message: msg.message,
+              urgent: msg.urgency === 'critical'
+            });
+          }
+        });
+      }
+      
+      // Handle achievements
+      if (response.data.achievements && response.data.achievements.length > 0) {
+        setAchievements(prev => [...prev, ...response.data.achievements]);
+        
+        response.data.achievements.forEach(achievement => {
+          setTotalPoints(prev => prev + achievement.points);
+          
+          addNotification({
+            type: 'achievement',
+            title: achievement.title,
+            message: achievement.description,
+            points: achievement.points
+          });
+        });
+      }
+      
+      // Success notification
+      addNotification({
+        type: 'success',
+        title: 'تم التنفيذ',
+        message: response.data.message
+      });
+      
       return response.data;
     } catch (error) {
       console.error('Error executing command:', error);
+      
+      addNotification({
+        type: 'alert',
+        title: 'خطأ',
+        message: error.response?.data?.detail || 'فشل تنفيذ الأمر',
+        urgent: true
+      });
+      
       throw error;
     }
   }, [sessionId]);
+  
+  const addNotification = (notification) => {
+    const id = Date.now();
+    setNotifications(prev => [...prev, { ...notification, id }]);
+    
+    // Auto dismiss after 5 seconds
+    setTimeout(() => {
+      dismissNotification(id);
+    }, 5000);
+  };
+  
+  const dismissNotification = (id) => {
+    setNotifications(prev => prev.filter(n => n.id !== id));
+  };
+  
+  const playAlertSound = () => {
+    // Simple beep sound
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
+  };
   
   const completeSimulation = async () => {
     try {

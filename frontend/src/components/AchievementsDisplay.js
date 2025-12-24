@@ -1,6 +1,6 @@
 import './AchievementsDisplay.css';
 
-const AchievementsDisplay = ({ achievements, totalPoints }) => {
+const AchievementsDisplay = ({ achievements, totalPoints, onDismiss }) => {
   if (!achievements || achievements.length === 0) return null;
   
   return (
@@ -19,6 +19,12 @@ const AchievementsDisplay = ({ achievements, totalPoints }) => {
             <div className="achievement-description">{achievement.description}</div>
             <div className="achievement-points">+{achievement.points} نقطة</div>
           </div>
+          <button 
+            className="achievement-close-btn"
+            onClick={() => onDismiss && onDismiss(idx)}
+          >
+            <i className="fas fa-times"></i>
+          </button>
           <div className="achievement-sparkles">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="sparkle" style={{

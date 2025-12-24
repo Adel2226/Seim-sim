@@ -1,4 +1,5 @@
 import './MetricsPanel.css';
+import LiveMetricsChart from './LiveMetricsChart';
 
 const MetricsPanel = ({ metrics }) => {
   const getScoreClass = (score) => {
